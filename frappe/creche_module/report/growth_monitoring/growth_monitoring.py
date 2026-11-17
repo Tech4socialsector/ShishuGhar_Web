@@ -1,8 +1,10 @@
 import frappe
+from frappe.apf.user_scope import scope_conditions, scoped
 from frappe import _
 from datetime import datetime, timedelta, date
 import calendar
 
+@scoped()
 def execute(filters=None):
     columns = [
         {"label": "Partner", "fieldname": "partner", "fieldtype": "Data", "width": 120},
@@ -63,6 +65,9 @@ def get_report_data(filters):
     if filters.get("creche"):
         creche = filters.get('creche')
     
+
+    # what the caller asked for is filtered below; this is all they may see, asked or not
+    scope_sql = scope_conditions("c", params)
 
     query = f"""
 SELECT 
@@ -271,6 +276,7 @@ LEFT JOIN (
     WHERE 
         (%(partner)s IS NULL OR p.name = %(partner)s) and (%(state)s IS NULL OR s.name = %(state)s) and (%(district)s IS NULL OR d.name = %(district)s) and (%(block)s IS NULL OR b.name = %(block)s)
 	and (%(gp)s IS NULL OR g.name = %(gp)s) and (%(creche)s IS NULL OR c.name = %(creche)s)
+        {scope_sql}
     GROUP BY 
         p.partner_name, s.state_name, d.district_name, b.block_name, 
         g.gp_name, v.village_name, c.creche_name

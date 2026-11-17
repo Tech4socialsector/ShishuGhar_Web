@@ -1,8 +1,10 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import date
 import calendar
 
+@scoped()
 def execute(filters=None):
     # Define columns based on the selected level
     selected_level = filters.get("level", "4")

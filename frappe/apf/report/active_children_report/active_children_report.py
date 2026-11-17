@@ -1,9 +1,11 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import datetime, timedelta, date
 import calendar
 from frappe.utils import nowdate
 
+@scoped()
 def execute(filters=None):
     columns, data = [], []
     months = [

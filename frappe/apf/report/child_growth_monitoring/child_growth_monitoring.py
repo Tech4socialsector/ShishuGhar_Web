@@ -4,6 +4,8 @@
 # import frappe
 
 
+from frappe.apf.user_scope import scoped
+@scoped()
 def execute(filters=None):
 	columns, data = [], []
 	return columns, data

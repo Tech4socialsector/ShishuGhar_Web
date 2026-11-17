@@ -1,16 +1,19 @@
 import frappe
 from frappe import _
+from frappe.apf.user_scope import scoped
 from frappe.utils import flt, getdate, nowdate
 import calendar
 from datetime import datetime, timedelta, date
 
 
+@scoped()
 def execute(filters=None):
     columns = get_columns(filters)
     data = get_data(filters)
     return columns, data
 
 
+@scoped()
 def execute(filters=None):
     selected_level = filters.get("level", "7")
     variable_columns = []

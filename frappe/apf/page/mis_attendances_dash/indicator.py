@@ -29,6 +29,7 @@ import json
 from datetime import date, timedelta
 
 import frappe
+from frappe.apf.user_scope import scoped
 from dateutil.relativedelta import relativedelta
 
 # ==============================================================================
@@ -446,6 +447,7 @@ def _cee_scope(args, q):
 
 
 @frappe.whitelist()
+@scoped()
 def get_gender_wise_distribution(**kwargs):
     def build(args):
         q = Q("`tabChild Enrollment and Exit` cee")
@@ -466,6 +468,7 @@ def get_gender_wise_distribution(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_age_wise_distribution(**kwargs):
     def build(args):
         q = Q("`tabChild Enrollment and Exit` cee")
@@ -493,6 +496,7 @@ def get_age_wise_distribution(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def age_in_months(**kwargs):
     def build(args):
         year, month = selected_month(args)
@@ -519,6 +523,7 @@ def age_in_months(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_specially_abled_children(**kwargs):
     def build(args):
         year, month = selected_month(args)
@@ -548,6 +553,7 @@ def get_specially_abled_children(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_education_level_mother(**kwargs):
     def build(args):
         year, month = selected_month(args)
@@ -602,6 +608,7 @@ def _household_aggregate(args, select_clause, group_by="", order_by="", join_cla
 
 
 @frappe.whitelist()
+@scoped()
 def get_occupation_data(**kwargs):
     def build(args):
         data = _household_aggregate(
@@ -616,6 +623,7 @@ def get_occupation_data(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_caste_data(**kwargs):
     def build(args):
         data = _household_aggregate(
@@ -633,6 +641,7 @@ def get_caste_data(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_religion_data(**kwargs):
     def build(args):
         labels = ['Hindu', 'Muslim', 'Christian', 'Buddhism', 'Sikhism', 'Jainism', 'Any Other', 'Not Available']
@@ -646,6 +655,7 @@ def get_religion_data(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def hh_migration_data(**kwargs):
     def build(args):
         data = _household_aggregate(
@@ -681,6 +691,7 @@ def reg_hh_query(args, detail=False):
 
 
 @frappe.whitelist()
+@scoped()
 def get_reg_HH(**kwargs):
     def build(args):
         q, group_field, months = reg_hh_query(args)
@@ -847,48 +858,56 @@ def _attendance_average_chart(args, mode, dataset_name, as_percent_string=False)
 
 
 @frappe.whitelist()
+@scoped()
 def avg_daily_attendance(**kwargs):
     respond("avg_daily_attendance", kwargs,
             lambda a: _attendance_average_chart(a, "avg_daily", "Avg. Daily Attendance"))
 
 
 @frappe.whitelist()
+@scoped()
 def attendance_percentage(**kwargs):
     respond("attendance_percentage", kwargs,
             lambda a: _attendance_average_chart(a, "percentage", "Attendance Percentage", as_percent_string=True))
 
 
 @frappe.whitelist()
+@scoped()
 def avg_sam_attendance_percent(**kwargs):
     respond("avg_sam_attendance_percent", kwargs,
             lambda a: _attendance_average_chart(a, "sam", "Avg. Attendance of SAM Children"))
 
 
 @frappe.whitelist()
+@scoped()
 def avg_suw_attendance_percent(**kwargs):
     respond("avg_suw_attendance_percent", kwargs,
             lambda a: _attendance_average_chart(a, "suw", "Avg. Attendance of SUW Children"))
 
 
 @frappe.whitelist()
+@scoped()
 def full_attendance(**kwargs):
     respond("full_attendance", kwargs,
             lambda a: _attendance_band_chart(a, "full_attendance", "100% Attendance Children"))
 
 
 @frappe.whitelist()
+@scoped()
 def zero_attendance(**kwargs):
     respond("zero_attendance", kwargs,
             lambda a: _attendance_band_chart(a, "zero_attendance", "Zero Attendance Children"))
 
 
 @frappe.whitelist()
+@scoped()
 def seventy_attendance(**kwargs):
     respond("seventy_attendance", kwargs,
             lambda a: _attendance_band_chart(a, "seventy_attendance", "Regular Children (>= 70%)"))
 
 
 @frappe.whitelist()
+@scoped()
 def fivety_attendance(**kwargs):
     respond("fivety_attendance", kwargs,
             lambda a: _attendance_band_chart(a, "fivety_attendance", "<= 50% Attendance Children"))
@@ -1039,7 +1058,7 @@ def _register_enrollment_endpoint(indicator_key, chart_fn):
         respond(indicator_key, kwargs, lambda a: chart_fn(a, indicator_key))
 
     endpoint.__name__ = indicator_key
-    return frappe.whitelist()(endpoint)
+    return frappe.whitelist()(scoped()(endpoint))
 
 
 get_total_exited = _register_enrollment_endpoint("get_total_exited", _enrollment_event_chart)
@@ -1116,6 +1135,7 @@ def _cee_month_series(args, months, case_sql, prefilter):
 
 
 @frappe.whitelist()
+@scoped()
 def get_active_enrolled_data(**kwargs):
     def build(args):
         months = _twelve_months(args)
@@ -1138,6 +1158,7 @@ def get_active_enrolled_data(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_exit_childrens(**kwargs):
     def build(args):
         months = _twelve_months(args)
@@ -1160,6 +1181,7 @@ def get_exit_childrens(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_eligible_enrolled_data(**kwargs):
     """Eligible (6-36 months, no child status) vs enrolled, grouped by level or household registration month."""
     def build(args):
@@ -1349,7 +1371,7 @@ def _register_anthro_endpoint(name, api_mode):
         respond(name, kwargs, lambda a: anthro_chart(a, api_mode))
 
     endpoint.__name__ = name
-    return frappe.whitelist()(endpoint)
+    return frappe.whitelist()(scoped()(endpoint))
 
 
 get_measured_data = _register_anthro_endpoint("get_measured_data", "measured_data")
@@ -1507,7 +1529,7 @@ def _register_gf_endpoint(name, api_mode):
         respond(name, kwargs, lambda a: gf_chart(a, api_mode))
 
     endpoint.__name__ = name
-    return frappe.whitelist()(endpoint)
+    return frappe.whitelist()(scoped()(endpoint))
 
 
 get_gf_data = _register_gf_endpoint("get_gf_data", "gf1")
@@ -1663,7 +1685,7 @@ def _register_cohort_endpoint(name):
         respond(name, kwargs, lambda a: cohort_chart(a, api_mode, dataset_name))
 
     endpoint.__name__ = name
-    return frappe.whitelist()(endpoint)
+    return frappe.whitelist()(scoped()(endpoint))
 
 
 get_cohort_moderate_to_normal = _register_cohort_endpoint("get_cohort_moderate_to_normal")
@@ -1737,7 +1759,7 @@ def _register_creche_endpoint(name, categories, is_snapshot=True, drop_status=Fa
         frappe.response["data"] = cached(name, args, lambda: creche_categorical(args, categories, is_snapshot))
 
     endpoint.__name__ = name
-    return frappe.whitelist()(endpoint)
+    return frappe.whitelist()(scoped()(endpoint))
 
 
 get_creche_status_data = _register_creche_endpoint("get_creche_status_data", {

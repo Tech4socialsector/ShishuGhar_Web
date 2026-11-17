@@ -2,6 +2,7 @@
 # MIT License. See LICENSE
 import base64
 import binascii
+import hmac
 from urllib.parse import quote, urlencode, urlparse
 
 from werkzeug.wrappers import Response
@@ -11,6 +12,7 @@ import frappe.database
 import frappe.utils
 import frappe.utils.user
 from frappe import _
+from frappe.api_token import assert_token_usable
 from frappe.core.doctype.activity_log.activity_log import add_authentication_log
 from frappe.sessions import Session, clear_sessions, delete_session, get_expiry_in_seconds
 from frappe.translate import get_language
@@ -659,10 +661,14 @@ def validate_api_key_secret(api_key, api_secret, frappe_authorization_source=Non
 	if not doc:
 		raise frappe.AuthenticationError
 	form_dict = frappe.local.form_dict
-	doc_secret = get_decrypted_password(doctype, doc, fieldname="api_secret")
-	if api_secret == doc_secret:
+	doc_secret = get_decrypted_password(doctype, doc, fieldname="api_secret", raise_exception=False)
+	# Constant-time comparison (``==`` leaks how many leading characters matched). A secret that
+	# is not set (e.g. revoked) never matches.
+	if doc_secret and hmac.compare_digest(str(api_secret).encode(), str(doc_secret).encode()):
 		if doctype == "User":
-			user = frappe.db.get_value(doctype="User", filters={"api_key": api_key}, fieldname=["name"])
+			user = doc
+			# expired / revoked / disabled-user tokens are rejected
+			assert_token_usable(user)
 		else:
 			user = frappe.db.get_value(doctype, doc, "user")
 		if frappe.local.login_manager.user in ("", "Guest"):

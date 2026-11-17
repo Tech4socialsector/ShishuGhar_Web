@@ -277,7 +277,8 @@ def authorize_creche(creche_id) -> dict:
 	"""Return the creche's authoritative partner/geography, or raise PermissionError.
 
 	Callers should write *these* values to new records instead of trusting the
-	partner/state/district/... the client sent.
+	partner/state/district/... the client sent. The result also carries the canonical
+	``creche_id`` (so ``"007"`` and ``"7"`` cannot be told apart by a later comparison).
 	"""
 	try:
 		tokens = sl.parse_ids(creche_id)
@@ -293,7 +294,7 @@ def authorize_creche(creche_id) -> dict:
 		sl.authorize_entity(get_user_scope(), path)
 	except sl.ScopeViolation:
 		_deny()
-	return path
+	return {**path, "creche_id": tokens[0]}
 
 
 def authorize_child(child_name):
@@ -325,28 +326,39 @@ def authorize_child(child_name):
 # --------------------------------------------------------------------------
 # raw SQL helper
 # --------------------------------------------------------------------------
-def scope_conditions(alias, params) -> str:
-	"""Return `` AND ...`` restricting ``alias`` (a table with partner_id and the
-	geography id columns, e.g. ``tabCreche``) to the caller's scope.
+# Tables that denormalise the partner and geography down to the gram panchayat but have no
+# village column (``Creche Summary``, ``Child Attendance Summary``).
+LEVELS_TO_GP = sl.GEO_LEVELS[:-1]
 
-	Bound parameters are added to ``params``. Empty string for unrestricted users.
-	``alias`` must be a developer-supplied constant, never request data.
+
+def scope_clauses(alias, params, *, partner=True, levels=None) -> list:
+	"""The caller's scope as a list of SQL conditions on ``alias``; ``[]`` for unrestricted users.
+
+	``alias`` is a table that has ``partner_id`` and the geography id columns (e.g. ``tabCreche``).
+	Bound parameters are added to ``params``. ``alias`` must be a developer-supplied constant,
+	never request data.
+
+	For a table that lacks some of those columns, ``partner=False`` skips the partner
+	condition and ``levels`` (a subset of ``scope_logic.GEO_LEVELS``) limits the geography
+	conditions to the columns it has. Both can only make the condition broader than the user's
+	mapping (a village-level mapping becomes its gram panchayat on a table without a village
+	column); they never drop a restriction the table could carry.
 	"""
 	scope = get_user_scope()
 	if scope.unrestricted:
-		return ""
+		return []
 	if scope.denied:
-		return " AND 1 = 0"
+		return ["1 = 0"]
 
 	clauses = []
-	if scope.partner:
+	if partner and scope.partner:
 		params["_sc_partner"] = scope.partner
 		clauses.append(f"{alias}.partner_id = %(_sc_partner)s")
 
 	ors = []
 	for i, row in enumerate(scope.rows):
 		ands = []
-		for level in sl.GEO_LEVELS:
+		for level in levels or sl.GEO_LEVELS:
 			if row.get(level) is not None:
 				key = f"_sc_{level}_{i}"
 				params[key] = row[level]
@@ -356,4 +368,9 @@ def scope_conditions(alias, params) -> str:
 	if ors:
 		clauses.append("(" + " OR ".join(ors) + ")")
 
-	return "".join(f" AND {c}" for c in clauses)
+	return clauses
+
+
+def scope_conditions(alias, params, *, partner=True, levels=None) -> str:
+	"""``scope_clauses`` as `` AND ...`` text to append to a WHERE; ``""`` for unrestricted users."""
+	return "".join(f" AND {c}" for c in scope_clauses(alias, params, partner=partner, levels=levels))

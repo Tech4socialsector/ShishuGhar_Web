@@ -236,3 +236,4 @@ frappe.patches.v15_0.sanitize_workspace_titles
 frappe.patches.v15_0.migrate_role_profile_to_table_multi_select
 frappe.core.doctype.user.patches.hash_reset_password_tokens
 frappe.patches.v15_0.clear_plaintext_user_token
+frappe.patches.v15_0.add_app_token_expiry

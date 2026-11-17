@@ -1,8 +1,10 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from datetime import date
 import calendar
 
 
+@scoped()
 def execute(filters=None):
     columns = get_columns()
     data = get_report_data(filters or {})

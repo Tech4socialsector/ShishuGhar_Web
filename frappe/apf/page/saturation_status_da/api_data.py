@@ -1,5 +1,6 @@
 import frappe
 from frappe import _
+from frappe.apf.user_scope import scope_conditions, scoped
 from frappe.utils import getdate, nowdate
 import calendar
 from datetime import date
@@ -164,6 +165,11 @@ def _consonant_key(value):
     return skeleton if len(skeleton) >= 4 else ""
 
 
+# Reference data (not scoped, by design): the endpoints below return the same State / District /
+# Block names, map geometry and layout config for everybody -- no creche, child, partner or
+# staff data. They are login-only (no allow_guest). Everything that returns programme data is
+# @scoped() and filtered with scope_conditions(); frappe/tests/test_endpoint_scope_coverage.py
+# fails if a new endpoint is added without one of the two.
 @frappe.whitelist()
 def get_geolocation_config():
     """Read and return geolocation.json from the page directory."""
@@ -1625,6 +1631,9 @@ def _name_matches_any(value, key_sets):
     return False
 
 
+_SATURATION_SCOPE_LEVELS = ("state_id", "district_id", "block_id")
+
+
 def _gp_village_status_rows(state=None, district=None, block=None):
     """Every `Saturation gp` / `Saturation village` row in scope, each with
     its `is_operational` flag joined on -- the authoritative per-GP/per-
@@ -1681,7 +1690,11 @@ def _gp_village_status_rows(state=None, district=None, block=None):
         # existed, which is indistinguishable from the row being deleted.
         # A row is only excluded when it was explicitly unchecked.
         gp_conditions.append("IFNULL(gp.is_active, 1) = 1")
-    gp_where = (" WHERE " + " AND ".join(gp_conditions)) if gp_conditions else ""
+    # Saturation gp / village are planning records with no partner, and no village column on
+    # the GP table: scope them by state / district / block only.
+    gp_where = " WHERE " + " AND ".join(gp_conditions or ["1 = 1"]) + scope_conditions(
+        "gp", gp_params, partner=False, levels=_SATURATION_SCOPE_LEVELS
+    )
     gp_name_col = "gp.gp_name AS gp_name," if _has_column("Saturation gp", "gp_name") else "NULL AS gp_name,"
 
     gp_rows = frappe.db.sql(f"""
@@ -1708,7 +1721,9 @@ def _gp_village_status_rows(state=None, district=None, block=None):
     if _has_column("Saturation village", "is_active"):
         # Same IFNULL reasoning as the Saturation gp filter above.
         village_conditions.append("IFNULL(v.is_active, 1) = 1")
-    village_where = (" WHERE " + " AND ".join(village_conditions)) if village_conditions else ""
+    village_where = " WHERE " + " AND ".join(village_conditions or ["1 = 1"]) + scope_conditions(
+        "v", village_params, partner=False, levels=_SATURATION_SCOPE_LEVELS
+    )
     village_name_col = ("v.village_name AS village_name,"
                          if _has_column("Saturation village", "village_name") else "NULL AS village_name,")
 
@@ -1741,6 +1756,7 @@ def _gp_village_status_rows(state=None, district=None, block=None):
 
 
 @frappe.whitelist()
+@scoped()
 def get_gp_village_status(state=None, district=None, block=None):
     """Every Gram Panchayat / Village in scope, with its own status flags --
     for the client to join against the GP/Village GeoJSON boundary layer by
@@ -1796,6 +1812,7 @@ def get_gp_village_status(state=None, district=None, block=None):
 
 
 @frappe.whitelist()
+@scoped()
 def get_dashboard_summary(year=None, month=None, state=None, district=None,
                           block=None, partner=None, c_status=None, level=None):
     """Totals + supervisor breakdown for the dashboard cards.
@@ -1828,7 +1845,9 @@ def get_dashboard_summary(year=None, month=None, state=None, district=None,
     if _has_column("Block", "is_active"):
         conditions.append("(c.block_id IS NULL OR c.block_id = '' OR b.is_active = 1)")
 
-    where_clause = " AND ".join(conditions)
+    # @scoped() has validated the filters the caller sent; this is what they get when they
+    # send none: only creches inside their own partner / geography.
+    where_clause = " AND ".join(conditions) + scope_conditions("c", params)
 
     def base_from(extra_joins=""):
         return f"""
@@ -1925,6 +1944,7 @@ def get_dashboard_summary(year=None, month=None, state=None, district=None,
 
 
 @frappe.whitelist()
+@scoped()
 def get_creche_points(year=None, month=None, state=None, district=None,
                       block=None, partner=None, c_status=None):
     """Per-creche points for the block map overlays.
@@ -1967,6 +1987,8 @@ def get_creche_points(year=None, month=None, state=None, district=None,
     if _has_column("Block", "is_active"):
         conditions.append("(c.block_id IS NULL OR c.block_id = '' OR b.is_active = 1)")
 
+    where_clause = " AND ".join(conditions) + scope_conditions("c", params)
+
     rows = frappe.db.sql(f"""
         SELECT
             c.name AS creche_id,
@@ -1987,7 +2009,7 @@ def get_creche_points(year=None, month=None, state=None, district=None,
         LEFT JOIN `tabGram Panchayat` AS gp ON gp.name = c.gp_id
         LEFT JOIN `tabVillage` AS v ON v.name = c.village_id
         LEFT JOIN `tabUser` AS u ON u.name = c.supervisor_id
-        WHERE {' AND '.join(conditions)}
+        WHERE {where_clause}
         ORDER BY supervisor ASC, c.creche_name ASC
     """, params, as_dict=True)
 
@@ -2069,6 +2091,7 @@ def get_active_state_names():
 # ---------------------------------------------------------------------------
 
 @frappe.whitelist()
+@scoped()
 def get_creche_master_data(year=None, month=None, c_status=None, partner=None, state=None, district=None, block=None, gp=None, village=None, supervisor_id=None, creche=None, phases=None):
     conditions = []
     params = {}
@@ -2128,7 +2151,7 @@ def get_creche_master_data(year=None, month=None, c_status=None, partner=None, s
     if _has_column("Block", "is_active"):
         conditions.append("(c.block_id IS NULL OR c.block_id = '' OR b.is_active = 1)")
 
-    where_clause = "WHERE " + " AND ".join(conditions) if conditions else ""
+    where_clause = "WHERE " + " AND ".join(conditions) + scope_conditions("c", params)
 
     data = frappe.db.sql(f"""
         SELECT

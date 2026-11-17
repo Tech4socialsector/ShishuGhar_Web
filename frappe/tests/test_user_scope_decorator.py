@@ -348,6 +348,43 @@ class TestScopedDecorator(unittest.TestCase):
 		self.frappe.local = types.SimpleNamespace()
 		self.assertEqual(us.scope_conditions("c", {}), " AND 1 = 0")
 
+	def test_scope_conditions_for_tables_without_partner_or_village(self):
+		us = self.us
+		# a village-level mapping row on a table that has no village column (Creche Summary)
+		self.login("sup@x", partner="5", rows=[dict(state_id="1", district_id="10", block_id="100", gp_id="1000", village_id="9000")])
+
+		params = {}
+		clauses = us.scope_clauses("cs", params, levels=us.LEVELS_TO_GP)
+		self.assertEqual(len(clauses), 2)
+		self.assertIn("cs.partner_id = %(_sc_partner)s", clauses[0])
+		self.assertIn("cs.gp_id = %(_sc_gp_id_0)s", clauses[1])
+		self.assertNotIn("village", " ".join(clauses))  # never reference a column the table lacks
+		self.assertNotIn("_sc_village_id_0", params)
+
+		# planning tables carry no partner at all: geography only
+		self.frappe.local = types.SimpleNamespace()
+		params = {}
+		sql = us.scope_conditions("gp", params, partner=False, levels=("state_id", "district_id", "block_id"))
+		self.assertNotIn("partner", sql)
+		self.assertNotIn("gp_id", sql)
+		self.assertIn("gp.block_id = %(_sc_block_id_0)s", sql)
+
+	def test_scope_clauses_restrict_everyone_who_is_not_unrestricted(self):
+		us = self.us
+		self.login("web@x", user_type="Website User")  # no partner, no mapping, not a System User
+		self.assertEqual(us.scope_clauses("c", {}, partner=False, levels=us.LEVELS_TO_GP), ["1 = 0"])
+		self.frappe.local = types.SimpleNamespace()
+		self.login("Administrator")
+		self.assertEqual(us.scope_clauses("c", {}), [])
+		self.assertEqual(us.LEVELS_TO_GP, ("state_id", "district_id", "block_id", "gp_id"))
+
+	def test_authorize_creche_returns_the_canonical_id(self):
+		us = self.us
+		self.login("sup@x", partner="5", rows=[dict(state_id="1")])
+		for raw in ("7", " 7 ", "007", 7):
+			self.frappe.local = types.SimpleNamespace()
+			self.assertEqual(us.authorize_creche(raw)["creche_id"], "7", raw)
+
 
 if __name__ == "__main__":
 	unittest.main()

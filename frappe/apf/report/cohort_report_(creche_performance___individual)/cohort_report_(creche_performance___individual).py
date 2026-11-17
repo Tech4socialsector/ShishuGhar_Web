@@ -1,10 +1,12 @@
 from __future__ import unicode_literals
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import datetime, date
 import calendar
 from dateutil.relativedelta import relativedelta
 
+@scoped()
 def execute(filters=None):
     if not filters:
         filters = {}

@@ -1,8 +1,10 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe.utils import nowdate
 import calendar
 from datetime import date
 
+@scoped()
 def execute(filters=None):
     columns, data = [], []
 

@@ -4,13 +4,20 @@
  "docstatus": 0,
  "doctype": "Page",
  "idx": 0,
- "modified": "2026-08-07 18:40:44.027084",
+ "modified": "2026-11-17 12:00:00.000000",
  "modified_by": "Administrator",
  "module": "APF",
  "name": "admin-panel",
  "owner": "Administrator",
  "page_name": "admin-panel",
- "roles": [],
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "Full Admin"
+  }
+ ],
  "script": null,
  "standard": "Yes",
  "style": null,

@@ -29,6 +29,8 @@ def calculate_z_score(value, M, L, S):
 
 @frappe.whitelist()
 def trigger_growth_status_update():
+    # starts a job that can run for six hours: administrators only, not every logged-in user
+    frappe.only_for("System Manager")
     frappe.enqueue(
         "frappe.val.z_score_status.update_growth_status_for_all_children",
         queue='long',

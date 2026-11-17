@@ -1,10 +1,12 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 import math
 from datetime import date, datetime, timedelta
 import calendar
 from frappe.utils import nowdate
 
+@scoped()
 def execute(filters=None):
     columns = get_columns(filters)
     data = get_data(filters)

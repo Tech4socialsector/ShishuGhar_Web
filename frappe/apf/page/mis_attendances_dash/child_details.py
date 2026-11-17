@@ -15,6 +15,7 @@ All endpoints are paginated. Pages after the first may pass `known_total`
 from datetime import date
 
 import frappe
+from frappe.apf.user_scope import scoped
 
 from .indicator import (
     ANTHRO_COLS,
@@ -197,6 +198,7 @@ REG_HH_COLUMNS = [
 
 
 @frappe.whitelist()
+@scoped()
 def get_registered_households_details(**kwargs):
     """Child-Details twin of indicator.get_reg_HH."""
     args = get_args(kwargs)
@@ -251,6 +253,7 @@ ATTENDANCE_COLUMNS = [
 
 
 @frappe.whitelist()
+@scoped()
 def get_attendance_details(**kwargs):
     """Child-Details twin of full_attendance / zero_attendance / seventy_attendance / fivety_attendance."""
     args = get_args(kwargs)
@@ -338,6 +341,7 @@ CHILD_FIELDS = ("child_id", "child_name", "gender", "age_months", "child_dob",
 
 
 @frappe.whitelist()
+@scoped()
 def get_enrollment_details(**kwargs):
     """Child-Details twin of Total Exited / Exit (reason) / New Enrolment."""
     args = get_args(kwargs)
@@ -366,6 +370,7 @@ def get_enrollment_details(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_household_enrollment_details(**kwargs):
     """Child-Details twin of Total Not Enrolled / Not Enrolled (status) / To Be Enrolled."""
     args = get_args(kwargs)
@@ -467,6 +472,7 @@ def _measurement_select(alias):
 
 
 @frappe.whitelist()
+@scoped()
 def get_malnutrition_details(**kwargs):
     """Child-Details twin of Measurement (%) and WFA/WFH/HFA Normal/Moderate/Severe (one row per child)."""
     args = get_args(kwargs)
@@ -514,6 +520,7 @@ def get_malnutrition_details(**kwargs):
 
 
 @frappe.whitelist()
+@scoped()
 def get_gf_snc_details(**kwargs):
     """Child-Details twin of GF1 / GF1+ / GF2 / Zig-Zag / SNC (one row per counted measurement)."""
     args = get_args(kwargs)
@@ -582,6 +589,7 @@ COHORT_COLUMNS = [
 
 
 @frappe.whitelist()
+@scoped()
 def get_cohort_details(**kwargs):
     """Child-Details twin of the cohort transition indicators."""
     args = get_args(kwargs)

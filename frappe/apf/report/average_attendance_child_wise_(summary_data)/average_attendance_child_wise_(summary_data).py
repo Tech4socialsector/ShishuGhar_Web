@@ -2,8 +2,10 @@
 # For license information, please see license.txt
 
 import frappe
+from frappe.apf.user_scope import LEVELS_TO_GP, scope_clauses, scoped
 from frappe import _
 
+@scoped()
 def execute(filters=None):
     columns = get_columns(filters)
     data = get_data(filters)
@@ -176,6 +178,8 @@ def get_conditions(filters):
             conditions.append("DATE(cas.creche_opening_date) = DATE(%(single_date)s)")
             filters.update({"single_date": single_date})
                 
+    # what the caller asked for is narrowed above; this is all they may see, asked or not
+    conditions.extend(scope_clauses("cas", filters, levels=LEVELS_TO_GP))
     return " AND ".join(conditions)
 
 def calculate_total_row(data):

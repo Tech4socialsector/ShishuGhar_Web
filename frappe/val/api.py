@@ -1,13 +1,50 @@
+import functools
 import hmac
 import re
 
 import frappe
+from frappe import _
+from frappe.api_token import new_expiry, revoke, token_usable
 from frappe.apf.user_scope import authorize_creche
 from frappe.rate_limiter import rate_limit
 from frappe.utils import getdate
 from frappe.utils.password import get_decrypted_password
 
 REQUIRED_APP_VERSION = "2.1.8"
+
+# Per-account throttle for the credential endpoints (on top of the per-IP @rate_limit):
+# 10 attempts per account per 5 minutes, whatever IP they come from.
+LOGIN_ATTEMPTS_PER_ACCOUNT = 10
+LOGIN_ATTEMPT_WINDOW_SECONDS = 300
+
+
+def _rate_limit_per_account(limit, seconds, field="usr"):
+    """Throttle an endpoint per *account* (``field`` argument), regardless of source IP.
+
+    The per-IP ``@rate_limit`` alone does nothing against an attacker who guesses one
+    account's password from many addresses. The account name is normalised (case and
+    whitespace) so ``Foo@x.com`` / ``foo@x.com `` share one counter. A request with no
+    account name is not counted here; the endpoint itself rejects it.
+    """
+
+    def decorator(fn):
+        @functools.wraps(fn)
+        def wrapper(*args, **kwargs):
+            account = str(kwargs.get(field) or "").strip().lower()
+            if account:
+                cache_key = frappe.cache.make_key(f"rl-account:{fn.__module__}.{fn.__name__}:{account}")
+                if not frappe.cache.get(cache_key):
+                    frappe.cache.setex(cache_key, seconds, 0)
+                if frappe.cache.incrby(cache_key, 1) > limit:
+                    frappe.throw(
+                        _("Too many attempts for this account. Please try again after some time."),
+                        frappe.TooManyRequestsError,
+                    )
+            return fn(*args, **kwargs)
+
+        return wrapper
+
+    return decorator
 
 
 def _version_tuple(version):
@@ -29,8 +66,10 @@ def _app_version_ok(app_device_id, app_device_version):
     return _version_tuple(app_device_version) >= _version_tuple(REQUIRED_APP_VERSION)
 
 
-@frappe.whitelist(allow_guest=True)
-@rate_limit(limit=60, seconds=60)  # per IP; Frappe's own per-user lockout also applies in authenticate()
+# POST only: over GET the password ends up in the URL, i.e. in access logs, proxies and browser history.
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+@rate_limit(limit=60, seconds=60)  # per IP
+@_rate_limit_per_account(LOGIN_ATTEMPTS_PER_ACCOUNT, LOGIN_ATTEMPT_WINDOW_SECONDS)  # per account; Frappe's own lockout also applies in authenticate()
 def login(usr, pwd, app_device_id=None, app_device_version=None):
     try:
         login_manager = frappe.auth.LoginManager()
@@ -148,9 +187,28 @@ def generate_keys(usr):
     # copied in clear text into User.token as well, readable by anyone who can
     # read User records. Never do that; see _require_app_token().
     user_details.api_secret = api_secret
+    # the key/secret stop working at this moment (see frappe/api_token.py)
+    user_details.api_token_expires_on = new_expiry()
     user_details.save()
 
     return api_secret
+
+
+@frappe.whitelist(methods=["POST"])
+def revoke_app_token(user=None):
+    """Invalidate the mobile app's API key/secret so it has to log in again.
+
+    The app should call this on logout. A user can revoke their own token; a System Manager
+    can revoke anybody's (e.g. a lost phone). Tokens are also revoked automatically when the
+    password changes, and they expire on their own (``app_token_expiry_days``).
+    """
+    caller = frappe.session.user
+    target = user or caller
+    if target != caller and "System Manager" not in frappe.get_roles(caller):
+        frappe.throw(_("You are not permitted to revoke another user's token."), frappe.PermissionError)
+
+    revoke(target)
+    frappe.response["message"] = "App token revoked"
 
 
 def save_login_history(user, old_device_id, app_device_version, new_device_id=None):
@@ -172,12 +230,21 @@ def save_login_history(user, old_device_id, app_device_version, new_device_id=No
         frappe.log_error(frappe.get_traceback(), "User Device Change Log Save Error")
         raise e
 
-@frappe.whitelist(allow_guest=True)
-@rate_limit(limit=60, seconds=60)
+@frappe.whitelist(allow_guest=True, methods=["POST"])
+@rate_limit(limit=60, seconds=60)  # per IP
+@_rate_limit_per_account(LOGIN_ATTEMPTS_PER_ACCOUNT, LOGIN_ATTEMPT_WINDOW_SECONDS)
 def update_device_id(usr, pwd, app_device_id, app_device_version):
     try:
         login_manager = frappe.auth.LoginManager()
         login_manager.authenticate(user=usr, pwd=pwd)
+
+        # Same gate as login(): an outdated app must not be handed a session (nor be able to
+        # register itself as the user's device) just by calling this endpoint instead.
+        if not _app_version_ok(app_device_id, app_device_version):
+            frappe.response["message"] = f"Please update your version to {REQUIRED_APP_VERSION} or later."
+            frappe.local.response["http_status_code"] = 403
+            return
+
         login_manager.post_login()
         user = frappe.get_cached_doc("User", frappe.session.user)
         old_device_id = user.app_device_id
@@ -225,9 +292,14 @@ def _require_app_token():
     if not stored_key or not stored_secret:
         return False
 
-    return hmac.compare_digest(api_key.encode(), str(stored_key).encode()) and hmac.compare_digest(
-        api_secret.encode(), str(stored_secret).encode()
-    )
+    if not (
+        hmac.compare_digest(api_key.encode(), str(stored_key).encode())
+        and hmac.compare_digest(api_secret.encode(), str(stored_secret).encode())
+    ):
+        return False
+
+    # right credentials, but expired / revoked / disabled account
+    return token_usable(user)
 
 
 def _apply_creche_scope(data):
@@ -240,7 +312,46 @@ def _apply_creche_scope(data):
     creche = authorize_creche(data.get("creche_id"))
     for field in ("partner_id", "state_id", "district_id", "block_id", "gp_id", "village_id"):
         data[field] = creche.get(field)
+    # canonical id: every later comparison / query uses the value that was authorised
+    data["creche_id"] = creche["creche_id"]
     return creche
+
+
+def _clean_values(values):
+    return {str(v).strip() for v in values if v is not None and str(v).strip()}
+
+
+def _assert_children_in_creche(creche_id, guids=(), child_ids=()):
+    """Reject a payload that names a child enrolled in a *different* creche.
+
+    ``_apply_creche_scope`` authorises the creche, but the nested rows name the child by
+    GUID / record id and those were never checked: a caller allowed to write to creche A
+    could attach rows to, or overwrite the measurements of, a child of creche B just by
+    knowing that child's GUID.
+
+    A child the server does not know yet is accepted: the app may sync attendance before the
+    enrolment (offline first), and a record that does not exist cannot belong to anyone else.
+    """
+    guids = sorted(_clean_values(guids))
+    ids = sorted(i for i in _clean_values(child_ids) if i.isascii() and i.isdigit())
+
+    rows = []
+    if guids:
+        rows += frappe.db.sql(
+            "SELECT name, creche_id FROM `tabChild Enrollment and Exit` WHERE childenrollguid IN %s",
+            (tuple(guids),),
+        )
+    if ids:
+        rows += frappe.db.sql(
+            "SELECT name, creche_id FROM `tabChild Enrollment and Exit` WHERE name IN %s",
+            (tuple(ids),),
+        )
+
+    for _child, child_creche in rows:
+        if str(child_creche) != str(creche_id):
+            frappe.throw(
+                _("A child in this request is enrolled in a different creche."), frappe.PermissionError
+            )
 
 
 #Child Attendance upload api
@@ -249,6 +360,10 @@ def child_attendance():
     if _require_app_token():
         data = frappe._dict(frappe.local.form_dict)
         _apply_creche_scope(data)
+        _assert_children_in_creche(
+            data.creche_id,
+            guids=[frappe._dict(c).get("childenrolledguid") for c in data.get("childattendancelist") or []],
+        )
         query = """
             SELECT tcc.name, tcal.childenrolledguid, tcal.name as cname
             FROM `tabChild Attendance` tcc 
@@ -360,6 +475,13 @@ def growth_monitoring():
         month = measurement_date.month
         creche_id = data.get("creche_id")
 
+        details = [frappe._dict(c) for c in data.get("anthropromatic_details") or []]
+        _assert_children_in_creche(
+            creche_id,
+            guids=[data.get("childenrollguid")] + [c.get("childenrollguid") for c in details],
+            child_ids=[c.get("child_id") for c in details],
+        )
+
         existing_gm = frappe.db.sql("""
             SELECT name FROM `tabChild Growth Monitoring` WHERE creche_id = %s AND YEAR(measurement_date) = %s AND MONTH(measurement_date) = %s""",
             (creche_id, year, month), as_dict=True)
@@ -426,10 +548,24 @@ def growth_monitoring():
         anthropometric_details = data.get("anthropromatic_details", [])
         for child_data in anthropometric_details:
             child_data = frappe._dict(child_data)
-            existing_child_attendance = frappe.db.exists("Anthropromatic Data", {
-                "cgmguid": child_data.cgmguid,
-                "childenrollguid": child_data.childenrollguid
-            })
+            # The GUIDs identify the row *globally*. Only update it when it sits on a growth
+            # monitoring sheet of the creche we authorised; otherwise a caller who knows another
+            # creche's GUIDs could overwrite that creche's child record.
+            existing_row = frappe.db.get_value(
+                "Anthropromatic Data",
+                {"cgmguid": child_data.cgmguid, "childenrollguid": child_data.childenrollguid},
+                ["name", "parent"],
+                as_dict=True,
+            )
+            existing_child_attendance = None
+            if existing_row:
+                row_creche = frappe.db.get_value("Child Growth Monitoring", existing_row.parent, "creche_id")
+                if str(row_creche) != str(creche_id):
+                    frappe.throw(
+                        _("A child in this request is enrolled in a different creche."),
+                        frappe.PermissionError,
+                    )
+                existing_child_attendance = existing_row.name
 
             if existing_child_attendance:
                 gm_detail_doc = frappe.get_doc("Anthropromatic Data", existing_child_attendance)
@@ -544,6 +680,11 @@ def child_immunization():
     if _require_app_token():
         data = frappe._dict(frappe.local.form_dict)
         _apply_creche_scope(data)
+        _assert_children_in_creche(
+            data.creche_id,
+            guids=[data.get("childenrolledguid")],
+            child_ids=[data.get("child_id")],
+        )
         existing_vaccination = frappe.db.exists("Child Immunization", {
             "childenrolledguid": data.get("childenrolledguid"),
             "creche_id": data.get("creche_id"),

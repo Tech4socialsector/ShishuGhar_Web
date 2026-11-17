@@ -1,8 +1,10 @@
 import frappe
+from frappe.apf.user_scope import scope_clauses, scoped
 from frappe.utils import nowdate, getdate, date_diff
 from datetime import date
 import calendar
 
+@scoped()
 def execute(filters=None):
     if not filters:
         filters = {}
@@ -157,6 +159,9 @@ def get_exit_data(filters):
         conditions.append(f"(enrollment_data.{field} = %(status_value)s OR exit_data.{field} = %(status_value)s)")
         params["status_value"] = status_value
         
+    # what the caller asked for is narrowed above; this is all they may see, asked or not
+    conditions.extend(scope_clauses("ce", params))
+
     # Build the query
     conditions_sql = " AND ".join(conditions) if conditions else "1=1"
     

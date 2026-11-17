@@ -1,8 +1,10 @@
 
 import frappe
+from frappe.apf.user_scope import scope_clauses, scoped
 from frappe import _
 from datetime import date
 
+@scoped()
 def execute(filters=None):
     columns = get_columns()
     data = get_summary_data(filters)
@@ -60,6 +62,9 @@ def get_summary_data(filters=None):
         if phases:
             conditions.append("c.phase IN %(phases)s")
             values["phases"] = tuple(phases)
+
+    # what the caller asked for is narrowed above; this is all they may see, asked or not
+    conditions.extend(scope_clauses("c", values))
 
     # Assemble final WHERE clause string
     where_clause = "WHERE " + " AND ".join(conditions) if conditions else ""

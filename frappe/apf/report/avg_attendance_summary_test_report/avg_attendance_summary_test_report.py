@@ -1,10 +1,12 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import date
 import calendar
 from concurrent.futures import ThreadPoolExecutor
 from frappe.utils.background_jobs import enqueue
 
+@scoped()
 def execute(filters=None):
     selected_level = filters.get("level", "7")
     variable_columns = get_variable_columns(selected_level)

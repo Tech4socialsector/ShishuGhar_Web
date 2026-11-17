@@ -1,4 +1,5 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import datetime, timedelta, date
 import calendar
@@ -9,6 +10,7 @@ OTHER_FIELDS_MAP = {
     "is_the_structural_safety_of_the_creches_roof_and_walls_ensured": "structural_safety_of_the_creches_roof_and_walls_ensured_other"
 }
 
+@scoped()
 def execute(filters=None):
     selected_category = filters.get("safety_indicators", "1")
     

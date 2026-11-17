@@ -1,9 +1,11 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import datetime, date, timedelta
 import calendar
 
 
+@scoped()
 def execute(filters=None):
     try:
         selected_level = filters.get("level", "7")

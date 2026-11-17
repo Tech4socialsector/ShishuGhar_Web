@@ -1,4 +1,5 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import datetime, timedelta, date
 import calendar
@@ -31,6 +32,7 @@ GROUP_FIELD_META = {
 
 ANSWER_COUNT_META = ((1, "yes", "Yes"), (2, "no", "No"), (3, "not", "Not Observed"), (4, "other", "Other"))
 
+@scoped()
 def execute(filters=None):
     selected_level = filters.get("level") or ""
     selected_category = filters.get("safety_indicators", "1")

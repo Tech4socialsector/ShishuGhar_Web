@@ -1,9 +1,10 @@
 import frappe
 from frappe import _
 from datetime import date
-from frappe.apf.user_scope import scope_conditions
+from frappe.apf.user_scope import scope_conditions, scoped
 
 
+@scoped()
 def execute(filters=None):
     selected_level = filters.get("level", "7")
     variable_columns = []

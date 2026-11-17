@@ -1,4 +1,5 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 from datetime import datetime, date, timedelta
 from dateutil.relativedelta import relativedelta
@@ -149,6 +150,7 @@ def build_dq_flags(row, slots):
     return flags
 
 
+@scoped()
 def execute(filters=None):
     if not filters:
         filters = {}

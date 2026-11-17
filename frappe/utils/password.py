@@ -141,6 +141,13 @@ def update_password(user, pwd, doctype="User", fieldname="password", logout_all_
 
 	query.run()
 
+	# A new password also ends the mobile app's API token: whoever held the old credentials
+	# must not keep access through a token issued under them.
+	if doctype == "User" and fieldname == "password":
+		from frappe.api_token import revoke
+
+		revoke(user, only_app_issued=True)
+
 	# clear all the sessions except current
 	if logout_all_sessions:
 		from frappe.sessions import clear_sessions

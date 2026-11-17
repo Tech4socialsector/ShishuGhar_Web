@@ -1,7 +1,9 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe import _
 
 
+@scoped()
 def execute(filters=None):
     selected_level = filters.get("level", "7")
     variable_columns = []

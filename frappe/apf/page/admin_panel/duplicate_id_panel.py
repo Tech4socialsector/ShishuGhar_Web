@@ -1,9 +1,41 @@
+import functools
 import frappe
 import re
 import json
 import os
+from frappe import _
 from frappe.utils.xlsxutils import make_xlsx
 from frappe.utils import now_datetime, add_days, get_datetime
+
+
+# ==========================================
+# ACCESS CONTROL
+# ==========================================
+# Every endpoint in this file changes or exports master data across ALL partners and regions
+# (rewrite primary ids, merge duplicates, move a creche's records to another creche). A page
+# without roles is open to every logged-in user and whitelisted methods ignore the page's
+# roles altogether, so each endpoint checks the caller itself.
+#
+# Default: System Manager and Full Admin. Override with ``admin_panel_roles`` in
+# site_config.json, e.g. ["System Manager", "Full Admin", "APPI Administrator"].
+DEFAULT_ADMIN_PANEL_ROLES = ("System Manager", "Full Admin")
+
+
+def admin_panel_roles():
+    return tuple(frappe.conf.get("admin_panel_roles") or DEFAULT_ADMIN_PANEL_ROLES)
+
+
+def admin_only(fn):
+    """Allow the call only for users holding one of ``admin_panel_roles()`` (put it under
+    ``@frappe.whitelist()``). Administrator holds every role, so it always passes."""
+
+    @functools.wraps(fn)
+    def wrapper(*args, **kwargs):
+        if not set(frappe.get_roles()) & set(admin_panel_roles()):
+            frappe.throw(_("Only an administrator can use the Admin Panel."), frappe.PermissionError)
+        return fn(*args, **kwargs)
+
+    return wrapper
 
 
 # ==========================================
@@ -11,6 +43,7 @@ from frappe.utils import now_datetime, add_days, get_datetime
 # ==========================================
 
 @frappe.whitelist()
+@admin_only
 def fix_duplicate_child_ids(export_excel=False, dry_run=1):
     """
     API to find/fix duplicate child_id in 'Child Enrollment and Exit'.
@@ -136,6 +169,7 @@ def fix_duplicate_child_ids(export_excel=False, dry_run=1):
 # ==========================================
 
 @frappe.whitelist()
+@admin_only
 def fix_duplicate_creche_ids(export_excel=False, dry_run=1):
     """
     API to find/fix duplicate creche_id in 'Creche'.
@@ -276,6 +310,7 @@ def build_caregiver_code(creche_doc):
 
 
 @frappe.whitelist()
+@admin_only
 def fix_duplicate_caregiver_ids(export_excel=False, dry_run=1):
     """
     API to find/fix duplicate caregiver_code in the 'Creche Caregiver' child table.
@@ -431,6 +466,7 @@ NAME_FIELD_BY_DOCTYPE = {
 
 
 @frappe.whitelist()
+@admin_only
 def search_records(doctype, search_term=""):
     """
     Search records by ID or name for the 'Edit ID Manual' tab,
@@ -464,6 +500,7 @@ def search_records(doctype, search_term=""):
 
 
 @frappe.whitelist()
+@admin_only
 def update_record_id(doctype, docname, new_id):
     """
     Manually edit the ID field of a single record.
@@ -659,6 +696,7 @@ def _append_log(entry):
 
 
 @frappe.whitelist()
+@admin_only
 def get_scheduler_settings():
     """
     Returns the current weekly-scheduler configuration.
@@ -667,6 +705,7 @@ def get_scheduler_settings():
 
 
 @frappe.whitelist()
+@admin_only
 def save_scheduler_settings(enabled=0, day="Sunday", time="02:00"):
     """
     Save the weekly scheduler configuration (single schedule shared by all
@@ -692,6 +731,7 @@ def save_scheduler_settings(enabled=0, day="Sunday", time="02:00"):
 
 
 @frappe.whitelist()
+@admin_only
 def get_scheduler_logs():
     """
     Returns execution history for the last 90 days, most recent first.
@@ -701,6 +741,7 @@ def get_scheduler_logs():
 
 
 @frappe.whitelist()
+@admin_only
 def run_scheduler_now():
     """
     Manually trigger a scheduler run immediately (used by a 'Run Now' button
@@ -867,6 +908,7 @@ def log_id_change(doctype, docname, old_name_value, new_name_value, old_id_value
 
 
 @frappe.whitelist()
+@admin_only
 def get_id_change_logs(doctype=None):
     """
     Returns ID change history for the last 90 days, most recent first.
@@ -1407,6 +1449,7 @@ CRECHE_LIST_PAGE_SIZE = 100
 
 
 @frappe.whitelist()
+@admin_only
 def list_creches(search_term="", page=1, page_size=CRECHE_LIST_PAGE_SIZE):
     """
     Paginated, search-aware Creche list for the Creche Transfer picker.
@@ -1458,6 +1501,7 @@ def list_creches(search_term="", page=1, page_size=CRECHE_LIST_PAGE_SIZE):
 
 
 @frappe.whitelist()
+@admin_only
 def get_transferable_fields():
     """
     Returns the list of checkbox fields the UI can offer, in display order.
@@ -1467,6 +1511,7 @@ def get_transferable_fields():
 
 
 @frappe.whitelist()
+@admin_only
 def get_creche_transfer_preview(from_creche, fields=None):
     """
     Returns a per-doctype record count for the given creche, so the UI can
@@ -1546,6 +1591,7 @@ def _parse_selected_fields(fields):
 
 
 @frappe.whitelist()
+@admin_only
 def start_creche_transfer(from_creche, to_creche, fields=None):
     """
     Kicks off a background job that moves every record referencing
@@ -1623,6 +1669,7 @@ def start_creche_transfer(from_creche, to_creche, fields=None):
 
 
 @frappe.whitelist()
+@admin_only
 def get_creche_transfer_status():
     """
     Polled by the browser every couple of seconds to render the live
@@ -1635,6 +1682,7 @@ def get_creche_transfer_status():
 
 
 @frappe.whitelist()
+@admin_only
 def get_creche_transfer_history():
     """
     Returns transfer run history for the last 90 days, most recent first.
@@ -1891,6 +1939,7 @@ def run_creche_transfer(transfer_id, from_creche, to_creche, selected_fields):
 
 
 @frappe.whitelist()
+@admin_only
 def start_creche_transfer_revert(transfer_id):
     """
     Kicks off a background job that restores every row changed by the given

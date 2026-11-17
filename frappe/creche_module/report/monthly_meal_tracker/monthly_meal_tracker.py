@@ -1,9 +1,11 @@
 import frappe
+from frappe.apf.user_scope import scoped
 from frappe.utils import nowdate
 from frappe import _
 from datetime import datetime, timedelta, date
 import calendar
 
+@scoped()
 def execute(filters=None):
     columns = [
         {"label": "Partner", "fieldname": "partner", "fieldtype": "Data", "width": 120},
