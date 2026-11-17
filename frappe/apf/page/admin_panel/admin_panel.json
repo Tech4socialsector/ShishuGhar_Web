@@ -1,0 +1,19 @@
+{
+ "content": null,
+ "creation": "2026-08-07 18:40:44.027084",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-08-07 18:40:44.027084",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "admin-panel",
+ "owner": "Administrator",
+ "page_name": "admin-panel",
+ "roles": [],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Admin Panel"
+}

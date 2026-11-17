@@ -1,0 +1,400 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2026-09-07 10:46:09.158488",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_tab",
+  "partner_id",
+  "state_id",
+  "district_id",
+  "block_id",
+  "gp_id",
+  "village_id",
+  "creche_id",
+  "child_details_tab",
+  "child_name",
+  "child_id",
+  "age_in_months",
+  "gender_id",
+  "date_of_referral",
+  "heightlength_at_growth_monitoring_cm",
+  "weight_at_growth_monitoring_kg",
+  "whz_at_identification_cat",
+  "waz_at_identification_cat",
+  "haz_at_identification_cat",
+  "whz_at_identification",
+  "waz_at_identification",
+  "haz_at_identification",
+  "weight_for_age",
+  "weight_for_height",
+  "height_for_age",
+  "referred_from",
+  "referral_to",
+  "referral_slipletter_provided",
+  "counselling_and_consent_tab",
+  "parents_counseled_about_nrc_admission",
+  "topics_covered",
+  "topics_covered_other",
+  "parents_consented_to_visit_nrc",
+  "if_no_reason",
+  "if_no_reason_other",
+  "consent_form__for_higher_health_facility_tab",
+  "parentcaregiver_counseled_about_visit_to_higher_health_facility",
+  "facility_topics_covered",
+  "facility_topics_covered_other",
+  "parents_consented_to_visit_higher_health_facility",
+  "facility_if_reason",
+  "hidden_tab",
+  "childenrollguid",
+  "nrc_rc_guid",
+  "con_guid",
+  "cgmguid",
+  "appcreated_on",
+  "appcreated_by",
+  "app_updated_by",
+  "app_updated_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_tab",
+   "fieldtype": "Tab Break",
+   "label": "Basic Info"
+  },
+  {
+   "fieldname": "partner_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Partner",
+   "options": "Partner",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "State",
+   "options": "State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "District",
+   "options": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "block_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Block/Zone",
+   "options": "Block",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gp_id",
+   "fieldtype": "Link",
+   "label": "Gram Panchayat/Municipal Corporation",
+   "options": "Gram Panchayat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "village_id",
+   "fieldtype": "Link",
+   "label": "Village/Settlement",
+   "options": "Village",
+   "reqd": 1
+  },
+  {
+   "fieldname": "creche_id",
+   "fieldtype": "Link",
+   "label": "Creche",
+   "options": "Creche",
+   "reqd": 1
+  },
+  {
+   "fieldname": "child_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Child Details"
+  },
+  {
+   "fieldname": "child_name",
+   "fieldtype": "Data",
+   "label": "Child name"
+  },
+  {
+   "fieldname": "child_id",
+   "fieldtype": "Data",
+   "label": "Child ID"
+  },
+  {
+   "fieldname": "age_in_months",
+   "fieldtype": "Data",
+   "label": "Age (in months)"
+  },
+  {
+   "fieldname": "gender_id",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "date_of_referral",
+   "fieldtype": "Date",
+   "label": "Date of referral",
+   "reqd": 1
+  },
+  {
+   "fieldname": "heightlength_at_growth_monitoring_cm",
+   "fieldtype": "Float",
+   "label": "Height/length at growth monitoring (cm)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_at_growth_monitoring_kg",
+   "fieldtype": "Float",
+   "label": "Weight at growth monitoring (kg)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WHZ category",
+   "precision": "1"
+  },
+  {
+   "fieldname": "waz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WAZ category",
+   "precision": "1"
+  },
+  {
+   "fieldname": "haz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "HAZ category",
+   "precision": "1"
+  },
+  {
+   "fieldname": "whz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WHZ at Identification",
+   "precision": "1"
+  },
+  {
+   "fieldname": "waz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WAZ at Identification"
+  },
+  {
+   "fieldname": "haz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "HAZ at Identification"
+  },
+  {
+   "fieldname": "weight_for_age",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for age",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_for_height",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for height",
+   "precision": "2"
+  },
+  {
+   "fieldname": "height_for_age",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Height for age",
+   "precision": "2"
+  },
+  {
+   "fieldname": "referred_from",
+   "fieldtype": "Link",
+   "label": "Referred from",
+   "options": "Facility visited to"
+  },
+  {
+   "fieldname": "referral_to",
+   "fieldtype": "Link",
+   "label": "Referral to",
+   "options": "Referral to"
+  },
+  {
+   "default": "0",
+   "fieldname": "referral_slipletter_provided",
+   "fieldtype": "Check",
+   "label": "Referral slip/letter provided"
+  },
+  {
+   "fieldname": "counselling_and_consent_tab",
+   "fieldtype": "Tab Break",
+   "label": "Counselling and Consent"
+  },
+  {
+   "fieldname": "parents_counseled_about_nrc_admission",
+   "fieldtype": "Link",
+   "label": "Parents counseled about NRC admission",
+   "options": "YesNo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "topics_covered",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Topics covered",
+   "multiselectlink": "Counselling Topics covered",
+   "options": "Counselling Topics covered child table"
+  },
+  {
+   "fieldname": "topics_covered_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "parents_consented_to_visit_nrc",
+   "fieldtype": "Link",
+   "label": "Parents consented to visit NRC",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "if_no_reason",
+   "fieldtype": "Link",
+   "label": "If no reason",
+   "options": "Counselling No reason"
+  },
+  {
+   "fieldname": "if_no_reason_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "consent_form__for_higher_health_facility_tab",
+   "fieldtype": "Tab Break",
+   "label": "Consent Form for Higher Health Facility"
+  },
+  {
+   "fieldname": "parentcaregiver_counseled_about_visit_to_higher_health_facility",
+   "fieldtype": "Link",
+   "label": "Parent/caregiver counseled about visit to higher health facility",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "facility_topics_covered",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Topics covered",
+   "multiselectlink": "Facility Topics covered",
+   "options": "Facility Topics covered Child table"
+  },
+  {
+   "fieldname": "facility_topics_covered_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "parents_consented_to_visit_higher_health_facility",
+   "fieldtype": "Link",
+   "label": "Parents consented to visit higher health facility",
+   "options": "YesNo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "facility_if_reason",
+   "fieldtype": "Link",
+   "label": "If no reason",
+   "options": "Counselling No reason"
+  },
+  {
+   "fieldname": "hidden_tab",
+   "fieldtype": "Tab Break",
+   "label": "Hidden"
+  },
+  {
+   "fieldname": "childenrollguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Children GUID"
+  },
+  {
+   "fieldname": "nrc_rc_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "NRC RC GUID"
+  },
+  {
+   "fieldname": "con_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "CON GUID"
+  },
+  {
+   "fieldname": "cgmguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "CGM GUID"
+  },
+  {
+   "fieldname": "appcreated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created on"
+  },
+  {
+   "fieldname": "appcreated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created by"
+  },
+  {
+   "fieldname": "app_updated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated by"
+  },
+  {
+   "fieldname": "app_updated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated on"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-07 10:46:09.158488",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "NRC Referral and Consent",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

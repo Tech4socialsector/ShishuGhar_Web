@@ -1,0 +1,73 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2025-09-25 15:27:17.074902",
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "SHISHU GHAR",
+ "letterhead": null,
+ "modified": "2026-09-14 13:41:18.941445",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "new test report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "query": "SELECT \r\nowner,\r\nenabled,\r\nemail,\r\nfull_name,\r\nmobile_no,\r\nlast_ip,\r\ntype,\r\npartner,\r\napp_device_id,\r\ncluster_coordinator,\r\ndate_of_joining,\r\ndate_of_leaving\r\n\r\n\r\n\r\nfrom `tabUser` where type = \"Creche Supervisor\" AND last_ip is NOT NULL\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n-- SELECT name,caregiver_name,caregiver_code, COUNT(*) as cnt\r\n-- FROM `tabCreche Caregiver`\r\n-- GROUP BY caregiver_code\r\n-- HAVING COUNT(*) > 1;\r\n\r\n\r\n\r\n-- SELECT\r\n--     cee.hhcguid AS \"HHCGUID\",\r\n--     cee.child_id AS \"Child ID\",\r\n--     cee.child_name AS \"Child Name\",\r\n--     DATE_FORMAT(cee.child_dob, '%%d-%%m-%%Y') AS \"DOB\",\r\n--     TIMESTAMPDIFF(\r\n--         MONTH,\r\n--         cee.child_dob,\r\n--         IF(\r\n--             DATE_FORMAT('2026-08-30', '%%Y-%%m') = DATE_FORMAT(CURDATE(), '%%Y-%%m'),\r\n--             CURDATE(),\r\n--             DATE('2026-08-30')\r\n--         )\r\n--     ) AS \"Current Age\",\r\n--     CASE\r\n--         WHEN cee.gender_id = 1 THEN 'M'\r\n--         ELSE 'F'\r\n--     END AS \"Gender\",\r\n--     DATE_FORMAT(cee.date_of_enrollment, '%%d-%%m-%%Y') AS \"Date Of Enrollment\",\r\n--     cr.creche_id AS \"Creche ID\",\r\n--     cr.creche_name AS \"Creche\",\r\n--     g.gp_name AS \"GP\",\r\n--     b.block_name AS \"Block\",\r\n--     d.district_name AS \"District\",\r\n--     s.state_name AS \"State\",\r\n--     p.partner_name AS \"Partner\"\r\n\r\n-- FROM `tabChild Enrollment and Exit` AS cee\r\n-- INNER JOIN `tabCreche` AS cr  ON cr.name = cee.creche_id\r\n-- INNER JOIN `tabPartner` AS p ON p.name = cr.partner_id\r\n-- INNER JOIN `tabState` AS s ON s.name = cr.state_id\r\n-- INNER JOIN `tabDistrict` AS d ON d.name = cr.district_id\r\n-- INNER JOIN `tabBlock` AS b ON b.name = cr.block_id\r\n-- INNER JOIN `tabGram Panchayat` AS g ON g.name = cr.gp_id\r\n-- LEFT JOIN `tabHousehold Form` AS hf ON hf.hhguid = cee.hhguid\r\n-- WHERE\r\n--     cee.date_of_enrollment <= '2026-08-30'\r\n--     AND (\r\n--         cee.date_of_exit IS NULL\r\n--         OR cee.date_of_exit > '2026-08-30'\r\n--     )\r\n--     AND cr.partner_id = 25\r\n--     AND cr.creche_status_id = 3\r\n--     AND (\r\n--         cr.creche_opening_date IS NULL\r\n--         OR cr.creche_opening_date <= '2026-08-30'\r\n--     )\r\n-- ORDER BY\r\n--     TRIM(CONVERT(p.partner_name USING utf8mb4)),\r\n--     TRIM(CONVERT(s.state_name USING utf8mb4)),\r\n--     TRIM(CONVERT(d.district_name USING utf8mb4)),\r\n--     TRIM(CONVERT(b.block_name USING utf8mb4)),\r\n--     TRIM(CONVERT(g.gp_name USING utf8mb4)),\r\n--     TRIM(CONVERT(cr.creche_name USING utf8mb4)),\r\n--     TRIM(CONVERT(cee.child_name USING utf8mb4));\r\n\r\n\r\n\r\n\r\n\r\n-- SELECT name,childenrollguid\r\n-- FROM `tabChild Enrollment and Exit` AS cee\r\n-- WHERE cee.child_id IN (\r\n--     'CG19111581132',\r\n--     'CG19111571124',\r\n--     'CG19111401134',\r\n--     'CG19111361206',\r\n--     'CG19111251053',\r\n--     'CG19111501303',\r\n--     'CG19111461272',\r\n--     'CG19111461254',\r\n--     'CG19111461613',\r\n--     'CG19111461542',\r\n--     'CG19111461614',\r\n--     'CG19111431302',\r\n--     'CG19111381262',\r\n--     'CG19111381272',\r\n--     'CG19111561062',\r\n--     'CG19111561052',\r\n--     'CG19111561042',\r\n--     'CG19111561012',\r\n--     'CG19111471193',\r\n--     'CG19111451034',\r\n--     'CG19111451044',\r\n--     'CG19111421062',\r\n--     'CG19111411164',\r\n--     'CG19111411613',\r\n--     'CG19111411154',\r\n--     'CG19111411254',\r\n--     'CG19111561032',\r\n--     'CG19111561022',\r\n--     'CG19111481253',\r\n--     'CG19111481254',\r\n--     'CG19111481072',\r\n--     'CG191112816601',\r\n--     'CG19111391282',\r\n--     'CG19111531432',\r\n--     'CG19111521262',\r\n--     'CG19111231023',\r\n--     'CG19111411072',\r\n--     'CG19111411473'\r\n-- );\r\n\r\n\r\n\r\n\r\n",
+ "ref_doctype": "Child Growth Monitoring",
+ "report_name": "new test report",
+ "report_type": "Query Report",
+ "roles": [
+  {
+   "role": "System Manager"
+  },
+  {
+   "role": "All"
+  },
+  {
+   "role": "APPI Administrator"
+  },
+  {
+   "role": "Partner Administrator"
+  },
+  {
+   "role": "Foundation Central Team"
+  },
+  {
+   "role": "APF State"
+  },
+  {
+   "role": "APF State Admin"
+  },
+  {
+   "role": "Program Manager"
+  },
+  {
+   "role": "Cluster Coordinator"
+  },
+  {
+   "role": "Creche Supervisor"
+  },
+  {
+   "role": "APF District"
+  },
+  {
+   "role": "MIS Manager"
+  },
+  {
+   "role": "Accounts and Logistics Manager"
+  },
+  {
+   "role": "Capacity and Building Manager"
+  },
+  {
+   "role": "APF Block"
+  },
+  {
+   "role": "M&E Manager"
+  }
+ ]
+}

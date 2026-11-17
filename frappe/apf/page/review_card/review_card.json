@@ -1,0 +1,23 @@
+{
+ "content": null,
+ "creation": "2026-10-05 10:49:09.760435",
+ "docstatus": 0,
+ "doctype": "Page",
+ "idx": 0,
+ "modified": "2026-10-05 13:03:13.570874",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "review-card",
+ "owner": "Administrator",
+ "page_name": "review-card",
+ "roles": [
+  {
+   "role": "All"
+  }
+ ],
+ "script": null,
+ "standard": "Yes",
+ "style": null,
+ "system_page": 0,
+ "title": "Review Card"
+}

@@ -1,0 +1,261 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2026-09-09 15:05:13.668393",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_tab",
+  "basic_info_section",
+  "partner_id",
+  "state_id",
+  "district_id",
+  "block_id",
+  "gp_id",
+  "village_id",
+  "creche_id",
+  "child_details_tab",
+  "child_name",
+  "child_id",
+  "child_dob",
+  "age_in_months",
+  "gender_id",
+  "date_of_identification",
+  "home_visit_tab",
+  "months_of_follow_up",
+  "current_month_weight",
+  "counselling",
+  "activity_level_of_child",
+  "any_illness_reported_by_motherfamily_member",
+  "counselling_on_diet",
+  "counselling_on_hygiene",
+  "hidden_tab",
+  "childenrollguid",
+  "hv_guid",
+  "cgmguid",
+  "appcreated_on",
+  "appcreated_by",
+  "app_updated_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_tab",
+   "fieldtype": "Tab Break",
+   "label": "Basic Info"
+  },
+  {
+   "fieldname": "basic_info_section",
+   "fieldtype": "Section Break",
+   "label": "Basic Info"
+  },
+  {
+   "fieldname": "partner_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Partner",
+   "options": "Partner",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "State",
+   "options": "State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "District",
+   "options": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "block_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Block/Zone",
+   "options": "Block",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gp_id",
+   "fieldtype": "Link",
+   "label": "Gram Panchayat/Municipal Corporation/VC",
+   "options": "Gram Panchayat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "village_id",
+   "fieldtype": "Link",
+   "label": "Village/Settlement",
+   "options": "Village",
+   "reqd": 1
+  },
+  {
+   "fieldname": "creche_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Creche",
+   "options": "Creche",
+   "reqd": 1
+  },
+  {
+   "fieldname": "child_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Child Details"
+  },
+  {
+   "fieldname": "child_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Child name"
+  },
+  {
+   "fieldname": "child_id",
+   "fieldtype": "Data",
+   "label": "Child ID"
+  },
+  {
+   "fieldname": "child_dob",
+   "fieldtype": "Date",
+   "label": "Child DOB"
+  },
+  {
+   "fieldname": "age_in_months",
+   "fieldtype": "Int",
+   "label": "Age (in months)"
+  },
+  {
+   "fieldname": "gender_id",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "date_of_identification",
+   "fieldtype": "Date",
+   "label": "Date of Identification"
+  },
+  {
+   "fieldname": "home_visit_tab",
+   "fieldtype": "Tab Break",
+   "label": "Home Visit"
+  },
+  {
+   "fieldname": "months_of_follow_up",
+   "fieldtype": "Data",
+   "label": "Months of follow up"
+  },
+  {
+   "fieldname": "current_month_weight",
+   "fieldtype": "Data",
+   "label": "Current month weight"
+  },
+  {
+   "fieldname": "counselling",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Counselling",
+   "options": "Counselling home visit"
+  },
+  {
+   "fieldname": "activity_level_of_child",
+   "fieldtype": "Link",
+   "label": "Activity level of child",
+   "options": "Active home visit"
+  },
+  {
+   "fieldname": "any_illness_reported_by_motherfamily_member",
+   "fieldtype": "Link",
+   "label": "Any illness (reported by mother/family member)",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "counselling_on_diet",
+   "fieldtype": "Link",
+   "label": "Counselling on diet",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "counselling_on_hygiene",
+   "fieldtype": "Link",
+   "label": "Counselling on hygiene",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "hidden_tab",
+   "fieldtype": "Tab Break",
+   "label": "Hidden"
+  },
+  {
+   "fieldname": "childenrollguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Children GUID"
+  },
+  {
+   "fieldname": "hv_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "HV GUID"
+  },
+  {
+   "fieldname": "cgmguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "CGM GUID"
+  },
+  {
+   "fieldname": "appcreated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created on"
+  },
+  {
+   "fieldname": "appcreated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created by"
+  },
+  {
+   "fieldname": "app_updated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated on"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-09 15:05:13.668393",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "Home Visit",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

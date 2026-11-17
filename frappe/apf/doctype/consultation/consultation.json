@@ -1,0 +1,671 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2026-09-05 13:07:15.225899",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "details_tab",
+  "partner_id",
+  "state_id",
+  "district_id",
+  "block_id",
+  "gp_id",
+  "village_id",
+  "creche_id",
+  "child_details_tab",
+  "child_name",
+  "child_id",
+  "child_dob",
+  "age_in_months",
+  "gender_id",
+  "date_of_identification",
+  "heightlength_at_growth_monitoring_cm",
+  "weight_at_growth_monitoring_kg",
+  "whz_at_identification_cat",
+  "waz_at_identification_cat",
+  "haz_at_identification_cat",
+  "whz_at_identification",
+  "waz_at_identification",
+  "haz_at_identification",
+  "parents_consented",
+  "date_of_referral",
+  "place_of_referral",
+  "consulation_and_treatment_tab",
+  "consultation_completed",
+  "if_no_reason",
+  "if_no_reason_other",
+  "date_of_consultation",
+  "facility_visited_to",
+  "facility_visited_to_other",
+  "weight_and_heightlength_measured_at_the_facility",
+  "heightlength_position",
+  "weight_measured_at_facility_value",
+  "heightlength_measured_at_facility_value",
+  "weight_for_age_zscore",
+  "weight_for_height_zscore",
+  "height_for_age_zscore",
+  "weight_for_age",
+  "weight_for_height",
+  "height_for_age",
+  "any_conditions_diagnosed",
+  "any_conditions_diagnosed_other",
+  "referral_form_section",
+  "referral",
+  "if_yes_facility_name",
+  "if_yes_facility_name_other",
+  "reason_for_referral",
+  "reason_for_referral_other",
+  "referral_slip_given",
+  "lab_form_section",
+  "lab",
+  "lab_test_prescribed",
+  "any_current_laboratory_tests_ordered",
+  "laboratory_tests_ordered_other",
+  "test_conducted",
+  "if_no_specify_reasons",
+  "if_no_specify_reason_other",
+  "medicine_form_section",
+  "medicines",
+  "medicines_prescribed",
+  "medicines_provided",
+  "did_the_supervisor_purchase_medicines_from_pharmacy",
+  "is_the_the_medicines_fully_distributed_to_the_mother",
+  "special_nutrition_care_snc_instructions_given_by_doctor",
+  "medicine_list_shared_with_parents",
+  "medicine_administration_explained_to_parents",
+  "parents_understanding_of_treatment_plan",
+  "section_break_obde",
+  "follow_up_column",
+  "follow_up",
+  "follow_up_date_recommended_by_doctor",
+  "follow_up_date_given_by_doctor",
+  "hidden_tab",
+  "con_guid",
+  "gm_categories",
+  "nrc_facility_categories",
+  "reschedule_followup",
+  "reffral_counsulation_guid",
+  "ill_guid",
+  "r_c_guid",
+  "childenrollguid",
+  "cgmguid",
+  "appcreated_on",
+  "appcreated_by",
+  "app_updated_by",
+  "app_updated_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Basic Info"
+  },
+  {
+   "fieldname": "partner_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Partner",
+   "options": "Partner",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "State",
+   "options": "State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "District",
+   "options": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "block_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Block/Zone",
+   "options": "Block",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gp_id",
+   "fieldtype": "Link",
+   "label": "Gram Panchayat/Municipal Corporation/VC",
+   "options": "Gram Panchayat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "village_id",
+   "fieldtype": "Link",
+   "label": "Village/Settlement",
+   "options": "Village",
+   "reqd": 1
+  },
+  {
+   "fieldname": "creche_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Creche",
+   "options": "Creche",
+   "reqd": 1
+  },
+  {
+   "fieldname": "child_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Child Details"
+  },
+  {
+   "fieldname": "child_name",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Child name"
+  },
+  {
+   "fieldname": "child_id",
+   "fieldtype": "Data",
+   "in_list_view": 1,
+   "in_standard_filter": 1,
+   "label": "Child ID"
+  },
+  {
+   "fieldname": "child_dob",
+   "fieldtype": "Date",
+   "label": "Child DOB"
+  },
+  {
+   "fieldname": "age_in_months",
+   "fieldtype": "Int",
+   "label": "Age (in months)"
+  },
+  {
+   "fieldname": "gender_id",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "date_of_identification",
+   "fieldtype": "Date",
+   "label": "Date of Identification"
+  },
+  {
+   "fieldname": "heightlength_at_growth_monitoring_cm",
+   "fieldtype": "Float",
+   "label": "Height/length at growth monitoring (cm)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_at_growth_monitoring_kg",
+   "fieldtype": "Float",
+   "label": "Weight at growth monitoring (kg)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WHZ category",
+   "precision": "2"
+  },
+  {
+   "fieldname": "waz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WAZ category",
+   "precision": "2"
+  },
+  {
+   "fieldname": "haz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "HAZ category",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WHZ at Identification"
+  },
+  {
+   "fieldname": "waz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WAZ at Identification"
+  },
+  {
+   "fieldname": "haz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "HAZ at Identification"
+  },
+  {
+   "default": "0",
+   "fieldname": "parents_consented",
+   "fieldtype": "Check",
+   "label": "Parents consented"
+  },
+  {
+   "fieldname": "date_of_referral",
+   "fieldtype": "Date",
+   "label": "Date of referral"
+  },
+  {
+   "fieldname": "place_of_referral",
+   "fieldtype": "Link",
+   "label": "Place of referral",
+   "options": "Consultation referral to"
+  },
+  {
+   "fieldname": "consulation_and_treatment_tab",
+   "fieldtype": "Tab Break",
+   "label": "Consultation and Treatment"
+  },
+  {
+   "default": "0",
+   "fieldname": "consultation_completed",
+   "fieldtype": "Check",
+   "label": "Consultation completed"
+  },
+  {
+   "fieldname": "if_no_reason",
+   "fieldtype": "Link",
+   "label": "Reason",
+   "options": "Consulation if no"
+  },
+  {
+   "fieldname": "if_no_reason_other",
+   "fieldtype": "Data",
+   "label": "Reason other"
+  },
+  {
+   "fieldname": "date_of_consultation",
+   "fieldtype": "Date",
+   "label": "Date of consultation"
+  },
+  {
+   "fieldname": "facility_visited_to",
+   "fieldtype": "Link",
+   "label": "Facility visited to",
+   "options": "Facility visited to"
+  },
+  {
+   "fieldname": "facility_visited_to_other",
+   "fieldtype": "Data",
+   "label": "Facility visited to other"
+  },
+  {
+   "default": "0",
+   "fieldname": "weight_and_heightlength_measured_at_the_facility",
+   "fieldtype": "Check",
+   "label": "Weight and height/length measured at the facility?"
+  },
+  {
+   "fieldname": "heightlength_position",
+   "fieldtype": "Link",
+   "label": "Height/length position?",
+   "options": "Measurement Equipment"
+  },
+  {
+   "fieldname": "weight_measured_at_facility_value",
+   "fieldtype": "Float",
+   "label": "Weight measured at facility value",
+   "precision": "2"
+  },
+  {
+   "fieldname": "heightlength_measured_at_facility_value",
+   "fieldtype": "Float",
+   "label": "Height/length measured at facility value"
+  },
+  {
+   "fieldname": "weight_for_age_zscore",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WAZ z score"
+  },
+  {
+   "fieldname": "weight_for_height_zscore",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WHZ z score"
+  },
+  {
+   "fieldname": "height_for_age_zscore",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "HFA z score"
+  },
+  {
+   "fieldname": "weight_for_age",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for age",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_for_height",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for height",
+   "precision": "2"
+  },
+  {
+   "fieldname": "height_for_age",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Height for age",
+   "precision": "2"
+  },
+  {
+   "fieldname": "any_conditions_diagnosed",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Any conditions diagnosed",
+   "multiselectlink": "Diagnosed Conditions",
+   "options": "Diagnosed Conditions child table"
+  },
+  {
+   "fieldname": "any_conditions_diagnosed_other",
+   "fieldtype": "Data",
+   "label": "Any conditions diagnosed other"
+  },
+  {
+   "fieldname": "referral_form_section",
+   "fieldtype": "Section Break",
+   "label": "Referral form"
+  },
+  {
+   "default": "0",
+   "fieldname": "referral",
+   "fieldtype": "Check",
+   "label": "Referral"
+  },
+  {
+   "fieldname": "if_yes_facility_name",
+   "fieldtype": "Link",
+   "label": "Facility name",
+   "options": "Consultation referral to"
+  },
+  {
+   "fieldname": "if_yes_facility_name_other",
+   "fieldtype": "Data",
+   "label": "Facility name other"
+  },
+  {
+   "fieldname": "reason_for_referral",
+   "fieldtype": "Link",
+   "label": "Reason for referral",
+   "options": "Reason for referral"
+  },
+  {
+   "fieldname": "reason_for_referral_other",
+   "fieldtype": "Data",
+   "label": "Reason for referral other"
+  },
+  {
+   "default": "0",
+   "fieldname": "referral_slip_given",
+   "fieldtype": "Check",
+   "label": "Referral slip given"
+  },
+  {
+   "fieldname": "lab_form_section",
+   "fieldtype": "Section Break",
+   "label": "Lab form"
+  },
+  {
+   "default": "0",
+   "fieldname": "lab",
+   "fieldtype": "Check",
+   "label": "Lab"
+  },
+  {
+   "default": "0",
+   "fieldname": "lab_test_prescribed",
+   "fieldtype": "Check",
+   "label": "Lab test prescribed"
+  },
+  {
+   "fieldname": "any_current_laboratory_tests_ordered",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Any current laboratory tests ordered",
+   "multiselectlink": "Laboratory Tests Ordered",
+   "options": "Laboratory Tests child table"
+  },
+  {
+   "fieldname": "laboratory_tests_ordered_other",
+   "fieldtype": "Data",
+   "label": "Laboratory tests ordered other"
+  },
+  {
+   "default": "0",
+   "fieldname": "test_conducted",
+   "fieldtype": "Check",
+   "label": "Test conducted"
+  },
+  {
+   "fieldname": "if_no_specify_reasons",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Specify reasons",
+   "multiselectlink": "Lab Form specify reason",
+   "options": "Lab Form specify child table"
+  },
+  {
+   "fieldname": "if_no_specify_reason_other",
+   "fieldtype": "Data",
+   "label": "Specify reason other"
+  },
+  {
+   "fieldname": "medicine_form_section",
+   "fieldtype": "Section Break",
+   "label": "Medicine Form"
+  },
+  {
+   "default": "0",
+   "fieldname": "medicines",
+   "fieldtype": "Check",
+   "label": "Medicines"
+  },
+  {
+   "default": "0",
+   "fieldname": "medicines_prescribed",
+   "fieldtype": "Check",
+   "label": "Medicines prescribed"
+  },
+  {
+   "fieldname": "medicines_provided",
+   "fieldtype": "Link",
+   "label": "Medicines provided",
+   "options": "Medicines Provided"
+  },
+  {
+   "default": "0",
+   "fieldname": "did_the_supervisor_purchase_medicines_from_pharmacy",
+   "fieldtype": "Check",
+   "label": "Did the supervisor purchase medicines from pharmacy"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_the_the_medicines_fully_distributed_to_the_mother",
+   "fieldtype": "Check",
+   "label": "Is the the medicines fully distributed to the mother "
+  },
+  {
+   "default": "0",
+   "fieldname": "special_nutrition_care_snc_instructions_given_by_doctor",
+   "fieldtype": "Check",
+   "label": "Special nutrition care (SNC) instructions given by doctor"
+  },
+  {
+   "default": "0",
+   "fieldname": "medicine_list_shared_with_parents",
+   "fieldtype": "Check",
+   "label": "Medicine list shared with parents"
+  },
+  {
+   "default": "0",
+   "fieldname": "medicine_administration_explained_to_parents",
+   "fieldtype": "Check",
+   "label": "Medicine administration explained to parents"
+  },
+  {
+   "fieldname": "parents_understanding_of_treatment_plan",
+   "fieldtype": "Link",
+   "label": "Parents understanding of treatment plan",
+   "options": "Treatment Plan"
+  },
+  {
+   "fieldname": "section_break_obde",
+   "fieldtype": "Section Break"
+  },
+  {
+   "fieldname": "follow_up_column",
+   "fieldtype": "Column Break",
+   "label": "Follow Up"
+  },
+  {
+   "default": "0",
+   "fieldname": "follow_up",
+   "fieldtype": "Check",
+   "hidden": 1,
+   "label": "follow up"
+  },
+  {
+   "default": "0",
+   "fieldname": "follow_up_date_recommended_by_doctor",
+   "fieldtype": "Check",
+   "label": "Follow up date recommended by doctor"
+  },
+  {
+   "fieldname": "follow_up_date_given_by_doctor",
+   "fieldtype": "Date",
+   "label": "Follow up date given by doctor"
+  },
+  {
+   "fieldname": "hidden_tab",
+   "fieldtype": "Tab Break",
+   "hidden": 1,
+   "label": "Hidden"
+  },
+  {
+   "fieldname": "con_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "con_guid",
+   "unique": 1
+  },
+  {
+   "fieldname": "gm_categories",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "GM Categories",
+   "options": "GM categories"
+  },
+  {
+   "fieldname": "nrc_facility_categories",
+   "fieldtype": "Link",
+   "hidden": 1,
+   "label": "NRC facility categories",
+   "options": "NRC facility categories"
+  },
+  {
+   "fieldname": "reschedule_followup",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Reschedule Followup"
+  },
+  {
+   "fieldname": "reffral_counsulation_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Reffral counsulation guid"
+  },
+  {
+   "fieldname": "ill_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "ill guid"
+  },
+  {
+   "fieldname": "r_c_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "R C GUID"
+  },
+  {
+   "fieldname": "childenrollguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Children GUID"
+  },
+  {
+   "fieldname": "cgmguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "CGM Guid"
+  },
+  {
+   "fieldname": "appcreated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created on"
+  },
+  {
+   "fieldname": "appcreated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created by"
+  },
+  {
+   "fieldname": "app_updated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated by"
+  },
+  {
+   "fieldname": "app_updated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated on"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-05 13:07:15.225899",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "Consultation",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}

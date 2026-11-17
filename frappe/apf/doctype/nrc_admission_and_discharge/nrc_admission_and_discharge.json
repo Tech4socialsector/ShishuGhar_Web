@@ -1,0 +1,739 @@
+{
+ "actions": [],
+ "autoname": "autoincrement",
+ "creation": "2026-09-07 10:43:31.653253",
+ "doctype": "DocType",
+ "editable_grid": 1,
+ "engine": "InnoDB",
+ "field_order": [
+  "basic_info_tab",
+  "partner_id",
+  "state_id",
+  "district_id",
+  "block_id",
+  "gp_id",
+  "village_id",
+  "creche_id",
+  "child_details_tab",
+  "child_id",
+  "child_name",
+  "gender_id",
+  "child_dob",
+  "age_in_months",
+  "date_of_referral",
+  "date_of_identification",
+  "heightlength_at_growth_monitoring_cm",
+  "weight_at_growth_monitoring_kg",
+  "whz_at_identification_cat",
+  "waz_at_identification_cat",
+  "haz_at_identification_cat",
+  "whz_at_identification",
+  "waz_at_identification",
+  "haz_at_identification",
+  "referred_from",
+  "referral_to",
+  "referral_slipletter_provided",
+  "nrc_admission_and_treatment_details_tab",
+  "child_admitted_to_nrc",
+  "if_no_nrc_admission",
+  "if_no_nrc_admission_other",
+  "date_of_admission",
+  "weight_at_admission_kg",
+  "height_at_admission_cm",
+  "weight_for_age",
+  "weight_for_height",
+  "height_for_age",
+  "whz_at_admission",
+  "waz_at_admission",
+  "expected_duration_of_stay",
+  "appetite_test_results",
+  "discharge_form_section",
+  "do_you_want_to_discharge",
+  "date_of_discharge",
+  "actual_duration_of_stay_days",
+  "weight_at_discharge_kg",
+  "height_at_discharge_cm",
+  "whz_at_discharge",
+  "waz_at_discharge",
+  "haz_at_discharge",
+  "weight_for_age_d",
+  "weight_for_height_d",
+  "height_for_age_d",
+  "weight_gain_during_stay_kg",
+  "discharge_status",
+  "if_others_specify",
+  "if_death_occurred_section",
+  "date_of_death",
+  "duration_from_admission_to_death_days",
+  "time_of_death",
+  "cause_of_death",
+  "death_certificate_issued",
+  "death_reported_to_authorities",
+  "if_left_against_medical_advice_lama_section",
+  "date_of_leaving",
+  "duration_of_stay_before_lama_days",
+  "weight_at_time_of_leaving_kg",
+  "reason_for_lama",
+  "lama_other",
+  "counseling_done_before_lama",
+  "lama_form_signed",
+  "if_referred_to_higher_center_section",
+  "date_of_referral_higher_center",
+  "referred_to_facility_name",
+  "referred_to_facility_name_other",
+  "reason_for_referral_higher_center",
+  "reason_for_referral_higher_center_other",
+  "referral_letter_provided",
+  "child_condition_at_referral",
+  "for_all_forms_section",
+  "any_medicines_prescribed",
+  "medicines_provided",
+  "did_the_supervisor_purchase_medicines_from_pharmacy",
+  "is_the_the_medicines_fully_distributed_to_the_mother",
+  "medicine_list_shared_with_parents",
+  "medicine_administration_explained_to_parents",
+  "parents_understanding_of_treatment_plan",
+  "discharge_summary_provided",
+  "hidden_tab",
+  "childenrollguid",
+  "nrc_ad_guid",
+  "reffral_counsulation_guid",
+  "ill_guid",
+  "rc_guid",
+  "con_guid",
+  "cgmguid",
+  "appcreated_on",
+  "appcreated_by",
+  "app_updated_by",
+  "app_updated_on"
+ ],
+ "fields": [
+  {
+   "fieldname": "basic_info_tab",
+   "fieldtype": "Tab Break",
+   "label": "Basic Info"
+  },
+  {
+   "fieldname": "partner_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Partner",
+   "options": "Partner",
+   "reqd": 1
+  },
+  {
+   "fieldname": "state_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "State",
+   "options": "State",
+   "reqd": 1
+  },
+  {
+   "fieldname": "district_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "District",
+   "options": "District",
+   "reqd": 1
+  },
+  {
+   "fieldname": "block_id",
+   "fieldtype": "Link",
+   "in_list_view": 1,
+   "label": "Block/Zone",
+   "options": "Block",
+   "reqd": 1
+  },
+  {
+   "fieldname": "gp_id",
+   "fieldtype": "Link",
+   "label": "Gram Panchayat/Municipal Corporation/VC",
+   "options": "Gram Panchayat",
+   "reqd": 1
+  },
+  {
+   "fieldname": "village_id",
+   "fieldtype": "Link",
+   "label": "Village",
+   "options": "Village",
+   "reqd": 1
+  },
+  {
+   "fieldname": "creche_id",
+   "fieldtype": "Link",
+   "label": "Creche",
+   "options": "Creche",
+   "reqd": 1
+  },
+  {
+   "fieldname": "child_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "Child Details"
+  },
+  {
+   "fieldname": "child_id",
+   "fieldtype": "Data",
+   "label": "Child ID"
+  },
+  {
+   "fieldname": "child_name",
+   "fieldtype": "Data",
+   "label": "Child name"
+  },
+  {
+   "fieldname": "gender_id",
+   "fieldtype": "Link",
+   "label": "Gender",
+   "options": "Gender"
+  },
+  {
+   "fieldname": "child_dob",
+   "fieldtype": "Date",
+   "label": "Child DOB"
+  },
+  {
+   "fieldname": "age_in_months",
+   "fieldtype": "Int",
+   "label": "Age (in months)"
+  },
+  {
+   "fieldname": "date_of_referral",
+   "fieldtype": "Date",
+   "label": "Date of referral"
+  },
+  {
+   "fieldname": "date_of_identification",
+   "fieldtype": "Date",
+   "label": "Date of identification"
+  },
+  {
+   "fieldname": "heightlength_at_growth_monitoring_cm",
+   "fieldtype": "Float",
+   "label": "Height/length at growth monitoring (cm)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_at_growth_monitoring_kg",
+   "fieldtype": "Float",
+   "label": "Weight at growth monitoring (kg)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WHZ category",
+   "precision": "2"
+  },
+  {
+   "fieldname": "waz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WAZ category",
+   "precision": "2"
+  },
+  {
+   "fieldname": "haz_at_identification_cat",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "HAZ category",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WHZ at Identification"
+  },
+  {
+   "fieldname": "waz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WAZ at Identification"
+  },
+  {
+   "fieldname": "haz_at_identification",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "HAZ at Identification"
+  },
+  {
+   "fieldname": "referred_from",
+   "fieldtype": "Link",
+   "label": "Referred from",
+   "options": "Facility visited to"
+  },
+  {
+   "fieldname": "referral_to",
+   "fieldtype": "Link",
+   "label": "Referral to",
+   "options": "Consultation referral to"
+  },
+  {
+   "default": "0",
+   "fieldname": "referral_slipletter_provided",
+   "fieldtype": "Check",
+   "label": "Referral slip/letter provided"
+  },
+  {
+   "fieldname": "nrc_admission_and_treatment_details_tab",
+   "fieldtype": "Tab Break",
+   "label": "NRC Admission and Treatment Details "
+  },
+  {
+   "fieldname": "child_admitted_to_nrc",
+   "fieldtype": "Link",
+   "label": "Child admitted to NRC",
+   "options": "YesNo",
+   "reqd": 1
+  },
+  {
+   "fieldname": "if_no_nrc_admission",
+   "fieldtype": "Link",
+   "label": "Reason",
+   "options": "No Child Admitted"
+  },
+  {
+   "fieldname": "if_no_nrc_admission_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "date_of_admission",
+   "fieldtype": "Date",
+   "label": "Date of admission"
+  },
+  {
+   "fieldname": "weight_at_admission_kg",
+   "fieldtype": "Float",
+   "label": "Weight at admission (kg)"
+  },
+  {
+   "fieldname": "height_at_admission_cm",
+   "fieldtype": "Float",
+   "label": "Height at admission (cm)"
+  },
+  {
+   "fieldname": "weight_for_age",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for age",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_for_height",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for height",
+   "precision": "2"
+  },
+  {
+   "fieldname": "height_for_age",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Height for age",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_admission",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WHZ at admission"
+  },
+  {
+   "fieldname": "waz_at_admission",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "WAZ at admission"
+  },
+  {
+   "fieldname": "expected_duration_of_stay",
+   "fieldtype": "Int",
+   "label": "Expected duration of stay"
+  },
+  {
+   "fieldname": "appetite_test_results",
+   "fieldtype": "Link",
+   "label": "Appetite test results",
+   "options": "Appetite Test Results"
+  },
+  {
+   "fieldname": "discharge_form_section",
+   "fieldtype": "Section Break",
+   "label": "Discharge form"
+  },
+  {
+   "default": "0",
+   "fieldname": "do_you_want_to_discharge",
+   "fieldtype": "Check",
+   "label": "Do you want to discharge?"
+  },
+  {
+   "fieldname": "date_of_discharge",
+   "fieldtype": "Date",
+   "label": "Date of discharge"
+  },
+  {
+   "fieldname": "actual_duration_of_stay_days",
+   "fieldtype": "Int",
+   "label": "Actual duration of stay (days)"
+  },
+  {
+   "fieldname": "weight_at_discharge_kg",
+   "fieldtype": "Float",
+   "label": "Weight at discharge (kg)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "height_at_discharge_cm",
+   "fieldtype": "Float",
+   "label": "Height at discharge (cm)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "whz_at_discharge",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WHZ at discharge",
+   "precision": "2"
+  },
+  {
+   "fieldname": "waz_at_discharge",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "WAZ at discharge",
+   "precision": "2"
+  },
+  {
+   "fieldname": "haz_at_discharge",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "HAZ at discharge",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_for_age_d",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for age (discharge)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_for_height_d",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Weight for height (discharge)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "height_for_age_d",
+   "fieldtype": "Float",
+   "hidden": 1,
+   "label": "Height for age (discharge)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "weight_gain_during_stay_kg",
+   "fieldtype": "Float",
+   "label": "Weight gain during stay (kg)",
+   "precision": "2"
+  },
+  {
+   "fieldname": "discharge_status",
+   "fieldtype": "Link",
+   "label": "Discharge status",
+   "options": "Discharge Status"
+  },
+  {
+   "fieldname": "if_others_specify",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "if_death_occurred_section",
+   "fieldtype": "Section Break",
+   "label": "If death occurred"
+  },
+  {
+   "fieldname": "date_of_death",
+   "fieldtype": "Date",
+   "label": "Date of death"
+  },
+  {
+   "fieldname": "duration_from_admission_to_death_days",
+   "fieldtype": "Int",
+   "label": "Duration from admission to death (days)"
+  },
+  {
+   "fieldname": "time_of_death",
+   "fieldtype": "Time",
+   "label": "Time of death"
+  },
+  {
+   "fieldname": "cause_of_death",
+   "fieldtype": "Data",
+   "label": "Cause of death"
+  },
+  {
+   "fieldname": "death_certificate_issued",
+   "fieldtype": "Link",
+   "label": "Death certificate issued",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "death_reported_to_authorities",
+   "fieldtype": "Link",
+   "label": "Death reported to authorities",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "if_left_against_medical_advice_lama_section",
+   "fieldtype": "Section Break",
+   "label": "If left against medical advice (LAMA)"
+  },
+  {
+   "fieldname": "date_of_leaving",
+   "fieldtype": "Date",
+   "label": "Date of leaving"
+  },
+  {
+   "fieldname": "duration_of_stay_before_lama_days",
+   "fieldtype": "Int",
+   "label": "Duration of stay before LAMA (days)"
+  },
+  {
+   "fieldname": "weight_at_time_of_leaving_kg",
+   "fieldtype": "Int",
+   "label": "Weight at time of leaving (kg)"
+  },
+  {
+   "fieldname": "reason_for_lama",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Reason for LAMA",
+   "multiselectlink": "LAMA",
+   "options": "LAMA child table"
+  },
+  {
+   "fieldname": "lama_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "counseling_done_before_lama",
+   "fieldtype": "Link",
+   "label": "Counseling done before LAMA",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "lama_form_signed",
+   "fieldtype": "Link",
+   "label": "LAMA form signed",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "if_referred_to_higher_center_section",
+   "fieldtype": "Section Break",
+   "label": "If Referred to Higher Center"
+  },
+  {
+   "fieldname": "date_of_referral_higher_center",
+   "fieldtype": "Date",
+   "label": "Date of referral"
+  },
+  {
+   "fieldname": "referred_to_facility_name",
+   "fieldtype": "Link",
+   "label": "Referred to (facility name)",
+   "options": "Facility referred to"
+  },
+  {
+   "fieldname": "referred_to_facility_name_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "fieldname": "reason_for_referral_higher_center",
+   "fieldtype": "Table MultiSelect",
+   "ismultiselect": 1,
+   "label": "Reason for referral",
+   "multiselectlink": "Referral Higher Center",
+   "options": "Referral Higher Center child table"
+  },
+  {
+   "fieldname": "reason_for_referral_higher_center_other",
+   "fieldtype": "Data",
+   "label": "Other"
+  },
+  {
+   "default": "0",
+   "fieldname": "referral_letter_provided",
+   "fieldtype": "Check",
+   "label": "Referral letter provided",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "child_condition_at_referral",
+   "fieldtype": "Link",
+   "label": "Child condition at referral",
+   "options": "Condition at Referral"
+  },
+  {
+   "fieldname": "for_all_forms_section",
+   "fieldtype": "Section Break",
+   "label": "For All forms"
+  },
+  {
+   "default": "0",
+   "fieldname": "any_medicines_prescribed",
+   "fieldtype": "Check",
+   "label": "Any medicines prescribed",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "medicines_provided",
+   "fieldtype": "Link",
+   "label": "Medicines provided",
+   "options": "Medicines Provided"
+  },
+  {
+   "default": "0",
+   "fieldname": "did_the_supervisor_purchase_medicines_from_pharmacy",
+   "fieldtype": "Check",
+   "label": "Did the supervisor purchase medicines from pharmacy",
+   "options": "YesNo"
+  },
+  {
+   "default": "0",
+   "fieldname": "is_the_the_medicines_fully_distributed_to_the_mother",
+   "fieldtype": "Check",
+   "label": "Is the the medicines fully distributed to the mother ",
+   "options": "YesNo"
+  },
+  {
+   "default": "0",
+   "fieldname": "medicine_list_shared_with_parents",
+   "fieldtype": "Check",
+   "label": "Medicine list shared with parents",
+   "options": "YesNo"
+  },
+  {
+   "default": "0",
+   "fieldname": "medicine_administration_explained_to_parents",
+   "fieldtype": "Check",
+   "label": "Medicine administration explained to parents",
+   "options": "YesNo"
+  },
+  {
+   "default": "0",
+   "fieldname": "parents_understanding_of_treatment_plan",
+   "fieldtype": "Check",
+   "label": "Parents understanding of treatment plan",
+   "options": "Understanding of Treatment Plan"
+  },
+  {
+   "default": "0",
+   "fieldname": "discharge_summary_provided",
+   "fieldtype": "Check",
+   "label": "Discharge summary provided",
+   "options": "YesNo"
+  },
+  {
+   "fieldname": "hidden_tab",
+   "fieldtype": "Tab Break",
+   "label": "Hidden"
+  },
+  {
+   "fieldname": "childenrollguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Children GUID"
+  },
+  {
+   "fieldname": "nrc_ad_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "NRC AD GUID"
+  },
+  {
+   "fieldname": "reffral_counsulation_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Reffral counsulation guid"
+  },
+  {
+   "fieldname": "ill_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "ill guid"
+  },
+  {
+   "fieldname": "rc_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "rc_guid"
+  },
+  {
+   "fieldname": "con_guid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "Con GUID"
+  },
+  {
+   "fieldname": "cgmguid",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "CGM GUID"
+  },
+  {
+   "fieldname": "appcreated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created on"
+  },
+  {
+   "fieldname": "appcreated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App created by"
+  },
+  {
+   "fieldname": "app_updated_by",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated by"
+  },
+  {
+   "fieldname": "app_updated_on",
+   "fieldtype": "Data",
+   "hidden": 1,
+   "label": "App updated on"
+  }
+ ],
+ "index_web_pages_for_search": 1,
+ "links": [],
+ "modified": "2026-09-07 10:43:31.653253",
+ "modified_by": "Administrator",
+ "module": "APF",
+ "name": "NRC Admission and Discharge",
+ "naming_rule": "Autoincrement",
+ "owner": "Administrator",
+ "permissions": [
+  {
+   "create": 1,
+   "delete": 1,
+   "email": 1,
+   "export": 1,
+   "print": 1,
+   "read": 1,
+   "report": 1,
+   "role": "System Manager",
+   "share": 1,
+   "write": 1
+  }
+ ],
+ "sort_field": "modified",
+ "sort_order": "DESC",
+ "states": []
+}
